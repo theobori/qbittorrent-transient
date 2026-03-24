@@ -30,7 +30,7 @@
 
 ;;; Code
 
-(require 'package)
+(require 'transient)
 
 (defgroup qbittorrent-transient ()
   "Emacs package dependency visualizer"
@@ -39,12 +39,18 @@
 
 ;;;; User options
 
-(defcustom qbittorrent-transient-executable (executable-find "qbittorrent")
-  "qBittorrent executable"
+(defcustom qbittorrent-transient-qbittorrent-path (executable-find "qbittorrent")
+  "qBittorrent executable path"
   :type 'string
   :group 'qbittorrent-transient)
 
 ;;;; Functions and Emacs user commands
+
+;; définir toutes les options
+;; définir un préfix transient avec les options
+;; Read a torrent
+;;   From file
+;;   From URL
 
 (provide 'qbittorrent-transient)
 
