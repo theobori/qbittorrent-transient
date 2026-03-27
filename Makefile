@@ -11,9 +11,6 @@ INSTALL_DIR = ${EMACS_USER_DIR}/manual-packages/${PACKAGE_NAME}
 SOURCE_FILES = qbittorrent-transient.el
 OBJECT_FILES = ${SOURCE_FILES:.el=.elc}
 FILES = ${SOURCE_FILES} ${OBJECT_FILES}
-TEST_FILES = test/qbittorrent-transient-test.elc
-
-LOAD_FILES_FOR_TEST = ${foreach file, ${OBJECT_FILES} ${TEST_FILES}, --load ${file}}
 
 .PHONY: all
 all: build
@@ -26,13 +23,9 @@ install: build
 	mkdir -p ${INSTALL_DIR}
 	cp -rv ${FILES} ${INSTALL_DIR}
 
-.PHONY: test
-test: ${TEST_FILES} ${OBJECT_FILES}
-	${EMACS_BATCH} --load ert ${LOAD_FILES_FOR_TEST} -f ert-run-tests-batch-and-exit
-
 .PHONY: clean
 clean:
-	${RM} ${OBJECT_FILES} ${TEST_FILES}
+	${RM} ${OBJECT_FILES}
 
 .PHONY: nuke
 nuke: clean

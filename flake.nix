@@ -25,10 +25,7 @@
 
         devShells = {
           default = pkgs.mkShell {
-            packages = with pkgs; [
-              emacs
-              gnumake
-            ];
+            inputsFrom = [ self.packages.${system}.default ];
           };
         };
 
