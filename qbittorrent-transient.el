@@ -160,11 +160,11 @@
    (qbittorrent-transient--argument-first-and-last)
    (qbittorrent-transient--argument-skip-dialog)]
   ["Download the torrents passed by the user"
-   ("f" "From file" qbittorrent-transient-filepath :transient t)
-   ("u" "From URL" qbittorrent-transient-url :transient t)
-   ("m" "From Dired marked files" qbittorrent-transient-dired :transient t)]
+   ("f" "From file" qbittorrent-transient--filepath :transient t)
+   ("u" "From URL" qbittorrent-transient--url :transient t)
+   ("m" "From Dired marked files" qbittorrent-transient--dired :transient t)]
   ["Open qBittorrent"
-   ("o" "Open without inputs" qbittorrent-transient-open :transient t)]
+   ("o" "Open without inputs" qbittorrent-transient--open :transient t)]
   ["qBittorrent command"
    ("!" "Command" qbittorrent-transient-command :transient t)])
 
@@ -199,7 +199,7 @@ or the return value."
   "Returns the current transient arguments."
   (flatten-list (transient-args transient-current-command)))
 
-(defun qbittorrent-transient-filepath (filepath &rest arguments)
+(defun qbittorrent-transient--filepath (filepath &rest arguments)
   "Run qbittorrent with a FILEPATH and given
 ARGUMENTS."
   (interactive (flatten-list (list
@@ -207,20 +207,20 @@ ARGUMENTS."
 			      (qbittorrent-transient--arguments))))
   (qbittorrent-transient--exec (cons (expand-file-name filepath) arguments)))
 
-(defun qbittorrent-transient-url (url &rest arguments)
+(defun qbittorrent-transient--url (url &rest arguments)
   "Run qbittorrent with a URL and given ARGUMENTS."
   (interactive (flatten-list (list
 			      (read-string "URL: " nil nil nil)
 			      (qbittorrent-transient--arguments))))
   (qbittorrent-transient--exec (cons url arguments)))
 
-(defun qbittorrent-transient-dired (&rest arguments)
+(defun qbittorrent-transient--dired (&rest arguments)
   "Run qbittorrent with a URL and given ARGUMENTS."
   (interactive (qbittorrent-transient--arguments))
   (let ((dired-marked-files (dired-get-marked-files nil 'marked)))
     (qbittorrent-transient--exec (append dired-marked-files arguments))))
 
-(defun qbittorrent-transient-open (&rest arguments)
+(defun qbittorrent-transient--open (&rest arguments)
   "Run qbittorrent with given ARGUMENTS."
   (interactive (qbittorrent-transient--arguments))
   (qbittorrent-transient--exec arguments))

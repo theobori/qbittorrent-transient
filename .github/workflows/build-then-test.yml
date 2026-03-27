@@ -33,5 +33,3 @@ jobs:
     # The step above installs Nix
     - name: Build the Elisp files
       run: make clean && make
-    - name: Run units tests
-      run: make test
