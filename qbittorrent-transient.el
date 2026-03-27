@@ -26,7 +26,7 @@
 
 ;;; Commentary
 
-;; qbittorrent-transient is an Emacs package providing a Transient interface for the qBittorrent CLI.
+;; qbittorrent-transient is an Emacs package providing a Transient interface for the official qBittorrent CLI.
 
 ;;; Code
 
@@ -162,6 +162,8 @@
    ("f" "From file" qbittorrent-transient-filepath)
    ("u" "From URL" qbittorrent-transient-url)
    ("m" "From Dired marked files" qbittorrent-transient-dired)]
+  ["Open qBittorrent"
+   ("o" "Open without inputs" qbittorrent-transient-open)]
   ["qBittorrent command"
    ("!" "Command" qbittorrent-transient-command)])
 
@@ -177,7 +179,7 @@ or the return value."
          (command (read-shell-command prompt (format "%s " qbittorrent-transient-qbittorrent-path))))
     (async-shell-command command)))
 
-(defun qbittorrent-transient--exec (arguments)
+(defun qbittorrent-transient--exec (&optional arguments)
   "Execute a qbittorrent command with given ARGUMENTS."
   (unless qbittorrent-transient-qbittorrent-path
     (error "Missing the qbittorrent executable"))
@@ -215,6 +217,11 @@ or the return value."
   (interactive (qbittorrent-transient--arguments))
   (let ((dired-marked-files (dired-get-marked-files nil 'marked)))
     (qbittorrent-transient--exec (append dired-marked-files arguments))))
+
+(defun qbittorrent-transient-open (&rest arguments)
+  "Run qbittorrent with given ARGUMENTS."
+  (interactive (qbittorrent-transient--arguments))
+    (qbittorrent-transient--exec arguments))
 
 (provide 'qbittorrent-transient)
 
