@@ -4,7 +4,7 @@
 
 [![built with nix](https://builtwithnix.org/badge.svg)](https://builtwithnix.org)
 
-qbittorrent-transient is a KISS Emacs package which contains a [Transient](https://docs.magit.vc/transient/) interface for qBittorrent.
+qbittorrent-transient is a KISS Emacs package which contains a Transient interface for qBittorrent.
 
 ## Getting started
 

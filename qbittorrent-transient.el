@@ -139,11 +139,6 @@
   :argument "--skip-dialog="
   :reader #'qbittorrent-transient--read-true-or-false)
 
-(defun qbittorrent-transient--read-true-or-false (prompt _initial-input _history)
-  "Ask user a y or n question, then return a true or false string depending
-or the return value."
-  (if (y-or-n-p prompt) "true" "false"))
-
 ;;;###autoload (autoload 'qbittorrent-transient "qbittorrent-transient" nil t)
 (transient-define-prefix qbittorrent-transient ()
   "Run `qbittorrent'."
@@ -164,10 +159,16 @@ or the return value."
    (qbittorrent-transient--argument-first-and-last)
    (qbittorrent-transient--argument-skip-dialog)]
   ["Download the torrents passed by the user"
-   ("f" "File" qbittorrent-transient-run-filepath)
-   ("u" "URL" qbittorrent-transient-run-url)]
+   ("f" "From file" qbittorrent-transient-filepath)
+   ("u" "From URL" qbittorrent-transient-url)
+   ("m" "From Dired marked files" qbittorrent-transient-dired)]
   ["qBittorrent command"
    ("!" "Command" qbittorrent-transient-command)])
+
+(defun qbittorrent-transient--read-true-or-false (prompt _initial-input _history)
+  "Ask user a y or n question, then return a true or false string depending
+or the return value."
+  (if (y-or-n-p prompt) "true" "false"))
 
 (defun qbittorrent-transient-command ()
   "Run a qbittorrent command."
@@ -180,7 +181,6 @@ or the return value."
   "Execute a qbittorrent command with given ARGUMENTS."
   (unless qbittorrent-transient-qbittorrent-path
     (error "Missing the qbittorrent executable"))
-  (message "%s" arguments)
   (let ((command (cons qbittorrent-transient-qbittorrent-path
 		       (append arguments qbittorrent-transient-extra-arguments)))
 	(sentinel (lambda (proc _)
@@ -196,19 +196,25 @@ or the return value."
   "Returns the current transient arguments."
   (flatten-list (transient-args transient-current-command)))
 
-(defun qbittorrent-transient-run-filepath (filepath &rest arguments)
+(defun qbittorrent-transient-filepath (filepath &rest arguments)
   "Run qbittorrent with a FILEPATH and given ARGUMENTS."
   (interactive (flatten-list (list
 			      (read-file-name "File: " nil nil t)
 			      (qbittorrent-transient--arguments))))
   (qbittorrent-transient--exec (cons (expand-file-name filepath) arguments)))
 
-(defun qbittorrent-transient-run-url (url &rest arguments)
+(defun qbittorrent-transient-url (url &rest arguments)
   "Run qbittorrent with a URL and given ARGUMENTS."
   (interactive (flatten-list (list
 			      (read-string "URL: " nil nil nil)
 			      (qbittorrent-transient--arguments))))
   (qbittorrent-transient--exec (cons url arguments)))
+
+(defun qbittorrent-transient-dired (&rest arguments)
+  "Run qbittorrent with a URL and given ARGUMENTS."
+  (interactive (qbittorrent-transient--arguments))
+  (let ((dired-marked-files (dired-get-marked-files nil 'marked)))
+    (qbittorrent-transient--exec (append dired-marked-files arguments))))
 
 (provide 'qbittorrent-transient)
 
