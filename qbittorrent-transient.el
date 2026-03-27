@@ -159,13 +159,13 @@
    (qbittorrent-transient--argument-first-and-last)
    (qbittorrent-transient--argument-skip-dialog)]
   ["Download the torrents passed by the user"
-   ("f" "From file" qbittorrent-transient-filepath)
-   ("u" "From URL" qbittorrent-transient-url)
-   ("m" "From Dired marked files" qbittorrent-transient-dired)]
+   ("f" "From file" qbittorrent-transient-filepath :transient t)
+   ("u" "From URL" qbittorrent-transient-url :transient t)
+   ("m" "From Dired marked files" qbittorrent-transient-dired :transient t)]
   ["Open qBittorrent"
-   ("o" "Open without inputs" qbittorrent-transient-open)]
+   ("o" "Open without inputs" qbittorrent-transient-open :transient t)]
   ["qBittorrent command"
-   ("!" "Command" qbittorrent-transient-command)])
+   ("!" "Command" qbittorrent-transient-command :transient t)])
 
 (defun qbittorrent-transient--read-true-or-false (prompt _initial-input _history)
   "Ask user a y or n question, then return a true or false string depending
@@ -199,7 +199,8 @@ or the return value."
   (flatten-list (transient-args transient-current-command)))
 
 (defun qbittorrent-transient-filepath (filepath &rest arguments)
-  "Run qbittorrent with a FILEPATH and given ARGUMENTS."
+  "Run qbittorrent with a FILEPATH and given
+ARGUMENTS."
   (interactive (flatten-list (list
 			      (read-file-name "File: " nil nil t)
 			      (qbittorrent-transient--arguments))))
@@ -221,7 +222,7 @@ or the return value."
 (defun qbittorrent-transient-open (&rest arguments)
   "Run qbittorrent with given ARGUMENTS."
   (interactive (qbittorrent-transient--arguments))
-    (qbittorrent-transient--exec arguments))
+  (qbittorrent-transient--exec arguments))
 
 (provide 'qbittorrent-transient)
 
