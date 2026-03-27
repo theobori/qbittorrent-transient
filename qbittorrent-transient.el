@@ -31,6 +31,7 @@
 ;;; Code
 
 (require 'transient)
+(require 'dired)
 
 (defgroup qbittorrent-transient ()
   "Transient interface for qBittorrent"
